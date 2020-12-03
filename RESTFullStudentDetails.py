@@ -1,5 +1,17 @@
 import requests, json
 
+def GetCourseName(courseNameURL):
+    r = requests.get(courseNameURL)
+
+    courseNameJson = json.loads(r.content)
+    return courseNameJson['coursename']
+
+def GetCourseType(typeNameURL):
+    r = requests.get(typeNameURL)
+
+    typeNameJson = json.loads(r.content)
+    return typeNameJson['shortcode']
+
 def PrintCourse(courseURL):
     r = requests.get(courseURL)
 
@@ -9,7 +21,11 @@ def PrintCourse(courseURL):
         courseJson = json.loads(r.content)
         degreeTypeURL = courseJson['_links']['degreetype']['href']
         courseNameURL = courseJson['_links']['coursename']['href']
-        print("course: {0}\t{1}".format(degreeTypeURL, courseNameURL))
+
+        degreeType = GetCourseType(degreeTypeURL)
+        courseName = GetCourseName(courseNameURL)
+
+        print("course: {0} {1}".format(degreeType, courseName))
 
 r = requests.get('http://5.67.108.54:8080/student/')
 
